@@ -39,9 +39,9 @@ services:
     - springbootmongodocker_mongodbvol:/data/db
 volumes:
   springbootmongodocker_mongodbvol:
-    external: true
-          #driver: rexray/ebs
+    driver: rexray/ebs
+          #external: true
 networks:
   springbootmongodocker_mongonetwork:
-    external: true
-          #driver: bridge
+    driver: bridge        
+          #external: true
