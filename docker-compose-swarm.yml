@@ -1,0 +1,47 @@
+version: '3.1'
+services:
+  springbootapp:
+    image: amruth0005/spring_boot_application:5
+    ports:
+    - 8080:8080
+    restart: always
+    environment:
+    - MONGO_DB_HOSTNAME=${DataBase}
+    - MONGO_DB_USERNAME=${USERNAME}
+    - MONGO_DB_PASSWORD=${PASSWORD}
+    networks:
+    - springbootmongodocker_mongonetwork
+    depends_on:
+    - mongo
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+  mongo:
+    image: mongo
+    environment:
+    - MONGO_INITDB_ROOT_USERNAME=${USERNAME}
+    - MONGO_INITDB_ROOT_PASSWORD=${PASSWORD}
+    restart: always
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    networks:
+    - springbootmongodocker_mongonetwork
+    volumes:
+    - springbootmongodocker_mongodbvol:/data/db
+volumes:
+  springbootmongodocker_mongodbvol:
+    external: true
+          #driver: rexray/ebs
+networks:
+  springbootmongodocker_mongonetwork:
+    external: true
+          #driver: bridge
