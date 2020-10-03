@@ -10,7 +10,7 @@ services:
     - MONGO_DB_USERNAME=${USERNAME}
     - MONGO_DB_PASSWORD=${PASSWORD}
     networks:
-    - springbootmongodocker_mongonetwork
+    - swarm_mongonetwork
     depends_on:
     - mongo
     deploy:
@@ -34,14 +34,14 @@ services:
       restart_policy:
         condition: on-failure
     networks:
-    - springbootmongodocker_mongonetwork
+    - swarm_mongonetwork
     volumes:
-    - springbootmongodocker_mongodbvol:/data/db
+    - swarm_mongodbvol:/data/db
 volumes:
-  springbootmongodocker_mongodbvol:
+  swarm_mongodbvol:
     driver: rexray/ebs
           #external: true
 networks:
-  springbootmongodocker_mongonetwork:
-    driver: bridge        
+  swarm_mongonetwork:
+    driver: overlay        
           #external: true
