@@ -1,0 +1,31 @@
+version: '3.1'
+services:
+  springbootapp:
+    image: amruth0005/spring_boot_application:5
+    ports:
+    - 8080:8080
+    restart: always
+    environment:
+    - MONGO_DB_HOSTNAME=mongo
+    - MONGO_DB_USERNAME=devdb
+    - MONGO_DB_PASSWORD=devdb@1234
+    networks:
+    - mongonetwork
+    depends_on:
+    - mongo
+  mongo:
+    image: mongo
+    environment:
+    - MONGO_INITDB_ROOT_USERNAME=devdb
+    - MONGO_INITDB_ROOT_PASSWORD=devdb@1234
+    restart: always
+    networks:
+    - mongonetwork
+    volumes:
+    - mongodbvol:/data/db
+volumes:
+  mongodbvol:
+    driver: local
+networks:
+  mongonetwork:
+    driver: bridge
