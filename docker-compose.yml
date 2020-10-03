@@ -6,26 +6,28 @@ services:
     - 8080:8080
     restart: always
     environment:
-    - MONGO_DB_HOSTNAME=mongo
-    - MONGO_DB_USERNAME=devdb
-    - MONGO_DB_PASSWORD=devdb@1234
+    - MONGO_DB_HOSTNAME=${DataBase}
+    - MONGO_DB_USERNAME=${USERNAME}
+    - MONGO_DB_PASSWORD=${PASSWORD}
     networks:
-    - mongonetwork
+    - springbootmongodocker_mongonetwork
     depends_on:
     - mongo
   mongo:
     image: mongo
     environment:
-    - MONGO_INITDB_ROOT_USERNAME=devdb
-    - MONGO_INITDB_ROOT_PASSWORD=devdb@1234
+    - MONGO_INITDB_ROOT_USERNAME=${USERNAME}
+    - MONGO_INITDB_ROOT_PASSWORD=${PASSWORD}
     restart: always
     networks:
-    - mongonetwork
+    - springbootmongodocker_mongonetwork
     volumes:
-    - mongodbvol:/data/db
+    - springbootmongodocker_mongodbvol:/data/db
 volumes:
-  mongodbvol:
-    driver: local
+  springbootmongodocker_mongodbvol:
+    external: true
+          #driver: rexray/ebs
 networks:
-  mongonetwork:
-    driver: bridge
+  springbootmongodocker_mongonetwork:
+    external: true
+          #driver: bridge
