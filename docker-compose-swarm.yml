@@ -10,7 +10,7 @@ services:
     - MONGO_DB_USERNAME=${USERNAME}
     - MONGO_DB_PASSWORD=${PASSWORD}
     networks:
-    - swarm_mongonetwork
+    - ubuntu_swarm_mongonetwork
     depends_on:
     - mongo
     deploy:
@@ -34,14 +34,14 @@ services:
       restart_policy:
         condition: on-failure
     networks:
-    - swarm_mongonetwork
+    - ubuntu_swarm_mongonetwork
     volumes:
-    - swarm_mongodbvol:/data/db
+    - ubuntu_swarm_mongodbvol:/data/db
 volumes:
-  swarm_mongodbvol:
-    driver: rexray/ebs
-          #external: true
+  ubuntu_swarm_mongodbvol:
+          #driver: rexray/ebs
+    external: true
 networks:
-  swarm_mongonetwork:
-    driver: overlay        
-          #external: true
+  ubuntu_swarm_mongonetwork:
+          #driver: overlay        
+    external: true
