@@ -33,7 +33,7 @@ pipeline {
             steps {
                 sshagent(['dockerswarm']){
 		withCredentials([string(credentialsId: 'nexus', variable: 'nexus_PWD')]) {
-		sh label: '', script: 'ssh -o StrictHostKeyChecking=no ubuntu@13.233.49.242 docker login 13.233.122.83:8084 -u admin -p ${Nexus_PWD}'
+		sh label: '', script: 'ssh -o StrictHostKeyChecking=no ubuntu@13.233.49.242 docker login -u admin -p ${nexus_PWD } 13.233.122.83:8084'
 		}
                 sh label: '', script: 'scp -o StrictHostKeyChecking=no docker-compose-swarm.yml ubuntu@13.233.49.242:'
                 sh label: '', script: 'ssh -o StrictHostKeyChecking=no ubuntu@13.233.49.242 docker stack rm spring || true '
