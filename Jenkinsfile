@@ -37,9 +37,9 @@ pipeline {
 		}
                 sh label: '', script: 'scp -o StrictHostKeyChecking=no docker-compose-swarm.yml ubuntu@13.233.49.242:'
                 sh label: '', script: 'ssh -o StrictHostKeyChecking=no ubuntu@13.233.49.242 docker stack rm spring || true '
-                sh label: '', script: 'ssh -o StrictHostKeyChecking=no ubuntu@13.233.49.242 docker service create --name spring -d \n
+                sh label: '', script: 'ssh -o StrictHostKeyChecking=no ubuntu@13.233.49.242 docker service create --name spring -d '\n'
 -p 8080:8080 -e MONGO_DB_HOSTNAME=mongo -e MONGO_DB_USERNAME=devdb -e MONGO_DB_PASSWORD=devdb@1234 --network spring_mongonetwork --replicas 2 --with-registry-auth 13.233.122.83:8084/spring_mongoapp:${BUILD_NUMBER}'
-		 sh label: '', script: 'ssh -o StrictHostKeyChecking=no ubuntu@13.233.49.242 docker service create --name mongo -d \n
+		 sh label: '', script: 'ssh -o StrictHostKeyChecking=no ubuntu@13.233.49.242 docker service create --name mongo -d '\n'
 -e MONGO_INITDB_ROOT_USERNAME=devdb MONGO_INITDB_ROOT_PASSWORD=devdb@1234 --network spring_mongonetwork -v mongovolume:/data/db mongo   
                 }
                     
