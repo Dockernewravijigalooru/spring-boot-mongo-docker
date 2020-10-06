@@ -21,7 +21,7 @@ services:
       restart_policy:
         condition: on-failure
   mongo:
-    image: mongo
+    image: 13.233.122.83:8084/mongo
     environment:
     - MONGO_INITDB_ROOT_USERNAME=devdb
     - MONGO_INITDB_ROOT_PASSWORD=devdb@1234
