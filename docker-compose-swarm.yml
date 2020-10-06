@@ -10,7 +10,7 @@ services:
     - MONGO_DB_USERNAME=devdb
     - MONGO_DB_PASSWORD=devdb@1234
     networks:
-    - mongonetwork
+    - spring_mongonetwork
     depends_on:
     - mongo
     deploy:
@@ -34,14 +34,14 @@ services:
       restart_policy:
         condition: on-failure
     networks:
-    - mongonetwork
+    - spring_mongonetwork
     volumes:
-    - mongodbvol:/data/db
+    - mongovolume:/data/db
 volumes:
-  mongodbvol:
-    driver: rexray/ebs
+  mongovolume:
+          #driver: rexray/ebs
     # external: true
 networks:
-  mongonetwork:
-    driver: overlay        
-    #external: true
+  spring_mongonetwork:
+          #driver: overlay        
+          #external: true
