@@ -1,7 +1,7 @@
 version: '3.1'
 services:
   springbootapp:
-    image: 65.0.6.89:8084/spring_mongoapp:21
+    image: 65.0.6.89:8084/spring_mongoapp:30
     ports:
     - 8080:8080
     restart: always
