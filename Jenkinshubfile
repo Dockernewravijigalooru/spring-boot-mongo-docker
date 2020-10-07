@@ -18,7 +18,7 @@ pipeline {
         }
         stage("Built_Image") {
             steps {
-                sh label: '', script: 'docker build -t amruth0005/spring_boot_hub_application:${BUIL_NUMBER} .'
+                sh label: '', script: 'docker build -t amruth0005/spring_boot_hub_application:${BUILD_NUMBER} .'
             }
         }
         stage("Push_Image_Hub") {
@@ -29,19 +29,18 @@ pipeline {
                 sh label: '', script: 'docker push amruth0005/spring_boot_hub_application:${BUILD_NUMBER}'
             }
         }
-	stage("Deploy_To_Dockerswarm") {
-	    steps {
-		sshagent(['dockerswarm']) {
-		withCredentials([string(credentialsId: 'amr_hub', variable: 'HUB_PWD')]) {
+        stage("Deploy_To_Dockerswarm") {
+	        steps {
+		        sshagent(['dockerswarm']) {
+		        withCredentials([string(credentialsId: 'amr_hub', variable: 'HUB_PWD')]) {
                 sh label: '', script: 'ssh -o  StrictHostKeyChecking=no ubuntu@172.31.15.246 docker login -u amruth0005 -p ${HUB_PWD}'
-		}
-		sh label: '', script: 'scp -o  StrictHostKeyChecking=no docker-compose-hub.yml ubuntu@172.31.15.246:'
- 		sh label: '', script: 'ssh -o  StrictHostKeyChecking=no ubuntu@172.31.15.246 docker stack rm springstack | true'
-		sh label: '', script: 'ssh -o  StrictHostKeyChecking=no ubuntu@172.31.15.246 docker stack deploy --compose-file docker-compose-hub.yml springstack'
-			}
-		}
-	}
-
+	        	}
+	        	sh label: '', script: 'scp -o  StrictHostKeyChecking=no docker-compose-hub.yml ubuntu@172.31.15.246:'
+ 	        	sh label: '', script: 'ssh -o  StrictHostKeyChecking=no ubuntu@172.31.15.246 docker stack rm springstack | true'
+	        	sh label: '', script: 'ssh -o  StrictHostKeyChecking=no ubuntu@172.31.15.246 docker stack deploy --prune --compose-file docker-compose-hub.yml springstack'
+	        	}
+	        }
+        }
     }
 }
 
