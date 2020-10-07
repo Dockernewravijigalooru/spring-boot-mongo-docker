@@ -1,7 +1,7 @@
 version: '3.1'
 services:
   springbootapp:
-    image: 35.154.66.156:8084/spring_boot_hub_application:1 
+    image: 35.154.66.156:8084/spring_boot_hub_application:23 
     ports:
     - 8080:8080
     restart: always
