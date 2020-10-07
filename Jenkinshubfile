@@ -18,7 +18,7 @@ pipeline {
         }
         stage("Built_Image") {
             steps {
-                sh label: '', script: 'docker build -t amruth0005/spring_boot_hub_application .'
+                sh label: '', script: 'docker build -t amruth0005/spring_boot_hub_application:${BUIL_NUMBER} .'
             }
         }
         stage("Push_Image_Hub") {
