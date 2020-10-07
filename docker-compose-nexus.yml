@@ -1,0 +1,56 @@
+version: '3.1'
+services:
+  springbootapp:
+    image: 35.154.66.156:8084/spring_boot_hub_application:1 
+    ports:
+    - 8080:8080
+    restart: always
+    environment:
+    - MONGO_DB_HOSTNAME=mongo
+    - MONGO_DB_USERNAME=devdb
+    - MONGO_DB_PASSWORD=devdb@1234
+    networks:
+    - spring_mongonetwork
+    depends_on:
+    - mongo
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        max_attempts: 5
+  mongo:
+    image: mongo
+    environment:
+    - MONGO_INITDB_ROOT_USERNAME=/run/secrets/mongo_use
+    - MONGO_INITDB_ROOT_PASSWORD=/run/secrets/mongo_pass
+    restart: always
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    networks:
+    - spring_mongonetwork
+    volumes:
+    - mongovolume:/data/db
+volumes:
+  mongovolume:
+          #driver: rexray/ebs
+    # external: true
+networks:
+  spring_mongonetwork:
+    #driver: overlay
+          #external: true
+
+secrets:
+  mongo_use:
+    external: true
+secrets:
+  mongo_pass:
+    external: true
+

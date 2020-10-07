@@ -1,0 +1,46 @@
+properties([[$class: 'JiraProjectProperty'], buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '5', numToKeepStr: '5')), [$class: 'JobLocalConfiguration', changeReasonComment: ''], pipelineTriggers([pollSCM('* * * * *')])])
+pipeline {
+    agent any
+    tools {
+    maven 'Maven_Home.3.6.3'
+    }
+
+    stages {
+        stage("Scm_Checkout") {
+            steps {
+                git branch: 'stage', credentialsId: 'github_id', url: 'https://github.com/Dockernewravijigalooru/spring-boot-mongo-docker.git'
+            }
+        }
+        stage("Maven_Buil_Artifact") {
+            steps {
+                sh label: '', script: 'mvn clean install'
+            }
+        }
+        stage("Built_Image") {
+            steps {
+                sh label: '', script: 'docker build -t 35.154.66.156:8084/spring_boot_hub_application:${BUILD_NUMBER} .'
+            }
+        }
+        stage("Push_Image_Hub") {
+            steps {
+		withCredentials([string(credentialsId: 'nexus', variable: 'NEXUS_PWD')]) {
+                sh label: '', script: 'docker login -u admin -p ${NEXUS_PWD} 35.154.66.156:8084'
+                }
+                sh label: '', script: 'docker push 35.154.66.156:8084/spring_boot_hub_application:${BUILD_NUMBER}'
+            }
+        }
+        stage("Deploy_To_Dockerswarm") {
+	        steps {
+		        sshagent(['dockerswarm']) {
+		        withCredentials([string(credentialsId: 'nexus', variable: 'NEXUS_PWD')]) {
+                        sh label: '', script: 'ssh -o  StrictHostKeyChecking=no ubuntu@172.31.15.246 docker login -u admin -p ${NEXUS_PWD} 35.154.66.156:8084'
+	        	}
+	        	sh label: '', script: 'scp -o  StrictHostKeyChecking=no docker-compose-hub.yml ubuntu@172.31.15.246:'
+ 	        	sh label: '', script: 'ssh -o  StrictHostKeyChecking=no ubuntu@172.31.15.246 docker stack rm springstacknexus | true'
+	        	sh label: '', script: 'ssh -o  StrictHostKeyChecking=no ubuntu@172.31.15.246 docker stack deploy --prune --compose-file docker-compose-hub.yml springstacknexus'
+	        	}
+	        }
+        }
+    }
+}
+
