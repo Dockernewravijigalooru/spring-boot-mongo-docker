@@ -18,7 +18,7 @@ pipeline {
         }
         stage("Built_Image") {
             steps {
-                sh label: '', script: 'docker build -t amruth0005/spring_boot_application .'
+                sh label: '', script: 'docker build -t amruth0005/spring_boot_hub_application .'
             }
         }
         stage("Push_Image_Hub") {
@@ -26,7 +26,7 @@ pipeline {
                 withCredentials([string(credentialsId: 'amr_hub', variable: 'HUB_PWD')]) {
                 sh label: '', script: 'docker login -u amruth0005 -p ${HUB_PWD}'
                 }
-                sh label: '', script: 'docker push amruth0005/spring_boot_application:${BUILD_NUMBER}'
+                sh label: '', script: 'docker push amruth0005/spring_boot_hub_application:${BUILD_NUMBER}'
             }
         }
 	stage("Deploy_To_Dockerswarm") {
