@@ -24,7 +24,7 @@ pipeline {
         stage("Push_Image_Nexus") {
             steps {
                 withCredentials([string(credentialsId: 'amr_hub', variable: 'HUB_PWD')]) {
-                sh label: '', script: 'docker login -u admin -p ${HUB_PWD}'
+                sh label: '', script: 'docker login -u amruth0005 -p ${HUB_PWD}'
                 }
                 sh label: '', script: 'docker push amruth0005/spring_boot_application:${BUILD_NUMBER}'
             }
