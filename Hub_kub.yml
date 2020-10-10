@@ -26,7 +26,7 @@ spec:
       - image: amruth0005/spring-boot-mongo
         name: springboot
         ports:
-        - containerPort: 8080  
+        - containerPort: 8383  
         env:
         - name: MONGO_DB_HOSTNAME
           value: mongo
@@ -50,7 +50,7 @@ spec:
   type: NodePort
   ports:
     - port: 8080
-      targetPort: 8080
+      targetPort: 8383
   selector:
     app: springboot
 ---
