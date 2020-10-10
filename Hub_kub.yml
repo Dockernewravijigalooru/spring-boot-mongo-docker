@@ -14,7 +14,7 @@ kind: ReplicationController
 metadata:
   name: spring-controller
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     app: springboot
   template:
@@ -26,7 +26,7 @@ spec:
       - image: amruth0005/spring-boot-mongo
         name: springboot
         ports:
-        - containerPort: 8383  
+        - containerPort: 8080  
         env:
         - name: MONGO_DB_HOSTNAME
           value: mongo
@@ -49,8 +49,8 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 80
-      targetPort: 8383
+    - port: 8080
+      targetPort: 8080
   selector:
     app: springboot
 ---
@@ -60,7 +60,7 @@ kind: ReplicationController
 metadata:
   name: mongo-controller
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     app: mongo
   template:
