@@ -9,7 +9,7 @@ data:
   password: mongodb@123
 ---
 # Replication Controller for springapp
-apiVersion: v1
+apiVersion: apps/v1
 kind: ReplicationController
 metadata:
   name: spring-controller
